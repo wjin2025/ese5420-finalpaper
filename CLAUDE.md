@@ -14,8 +14,10 @@ The 27 indicators documented by the Kaggle competition "Stock Market Signal: Pre
 (https://www.kaggle.com/competitions/stock-market-signal-predict-next-day-returns): return_1d/5d/10d/20d,
 sma_ratio_5/10/20/50/200, ema_ratio_12/26, macd_hist, rsi_14, bb_position, volatility_10d/20d/60d,
 volume_sma_ratio_10/20, daily_range, avg_range_10d, high_low_ratio, momentum_10d/20d, roc_5, roc_10, atr_14.
-We only borrow the definitions; our prices are the NASDAQ-100 CSV above. Implementation: Qidi's make_features.
-Note: momentum_10d, momentum_20d, roc_5, roc_10 are exact rescalings of return_10d/20d/5d/10d (kept because documented).
+We only borrow the definitions; our prices are the NASDAQ-100 CSV above. Implementation: Qidi's make_features (src/features.py).
+We use 23 of the 27: momentum_10d, momentum_20d, roc_5, roc_10 are exact rescalings of return_10d/20d/5d/10d and are
+dropped (decided by Jin + Qidi; state this in the paper and to the professor). Model table: 491,772 rows, 50.58% up.
+Look-ahead test: python -m pytest (tests/test_no_lookahead.py). Rerun it after ANY change to features.py.
 
 ## Team workflow
 Each part has an owner (see proposal "Who does what"); the others review it. Qidi owns features and splits;
