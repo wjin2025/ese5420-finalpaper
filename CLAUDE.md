@@ -4,7 +4,7 @@ Read docs/proposal.txt first. It is the approved plan. Do not change the design 
 Talk to Jin in Chinese, explain every step plainly, and keep code readable (Jin must explain every line).
 
 ## Environment
-conda env `finalpaper`, Python 3.11; pandas 3.1, numpy 2.4, scikit-learn 1.9, lightgbm 4.7 (see requirements.txt). Mac M1 Pro: 6 performance cores, use num_threads=6 for LightGBM.
+conda env `finalpaper`, Python 3.11; pandas 3.1, numpy 2.4, scikit-learn 1.9, lightgbm 4.7 (see requirements.txt). Mac M1 Pro. LightGBM uses n_jobs=-1 plus deterministic=True, force_row_wise=True.
 
 ## Data
 data/NASDAQ100_Historical_Data.csv: Ticker, Date, Open, High, Low, Close, Adj Close, Volume; 100 tickers, 2000-01-03 to 2026-02-18.
@@ -22,27 +22,29 @@ Look-ahead test: python -m pytest (tests/test_no_lookahead.py). Rerun it after A
 ## Team workflow
 Each part has an owner (see proposal "Who does what"); the others review it. Qidi owns features and splits;
 Jin owns models; Yixun owns error analysis, bootstrap, key figure. Help Jin review others' code, do not silently rewrite it.
+Qidi works in Colab; the group adopted Qidi's Colab version as the reference. When porting Colab code into src/, keep the logic
+unchanged, then verify the port reproduces Qidi's numbers exactly.
 
 ## Rules (never break)
 - Features at day t use only data up to day t, computed per ticker (groupby Ticker). No center=True, no shift(-1) in features.
 - Label = 1 if next-day Adj Close is higher (shift(-1) within ticker); drop each ticker's last day. Secondary label for robustness: beats the day's cross-sectional median return.
 - 200-day warm-up dropped per ticker.
-- Every step learned from data (scaling, tuning) goes inside the folds: use sklearn Pipeline.
+- Every step learned from data (clipping, scaling, tuning) goes inside the folds: use sklearn Pipeline.
 - For test year Y: dev = 2000..Y-1, test = Y. Purge the last dev day before refitting on the full dev set.
 - Three schemes on the dev set:
   1. shuffled 5-fold over rows;
   2. date-grouped 5-fold with dates assigned to folds AT RANDOM (not contiguous blocks), so a day's stocks share a fold;
   3. expanding-window walk-forward over the last 5 dev years (one fold per year), purging the last training day.
-- Scheme estimate = mean of the 5 fold AUCs (same rule for all schemes).
+- Scheme estimate (cv_auc) = mean of the 5 fold AUCs (same rule for all schemes).
 - True AUC in year Y gets a day-bootstrap 95% interval: resample trading days with replacement, 1,000 times.
 - Estimation error = estimate - true AUC. Measured with FIXED default configs, not the tuned best.
 - The 2024-01 to 2026-02 test is used ONCE at the very end, after every choice. Never touch it otherwise.
-- SEED = 0 everywhere. Append each result row to results/main.csv (year, model, scheme, estimate, true_auc, true_lo, true_hi, error) so runs can resume.
+- SEED = 5420 everywhere (Qidi's choice, adopted 2026-11-07). Results go to results/results.csv (model, year, scheme, cv_auc, test_auc, test_lo, test_hi; error = cv_auc - test_auc), saved after every year so runs can resume.
 
-## Fixed configs (src/config.py)
-- LR default: L2, C=1. LR grid: C in {0.001, 0.01, 0.1, 1, 10}.
-- LightGBM default: library defaults + seed=0, deterministic=True, num_threads=6.
-- LightGBM grid (5 configs, fixed now): (num_leaves, learning_rate, n_estimators) = (7,0.05,200), (15,0.05,200), (31,0.05,200), (15,0.1,100), (31,0.1,100).
+## Fixed configs (src/config.py; Qidi's frozen configuration, adopted by the group 2026-11-07)
+- Logistic regression: Clip each feature to its 1st-99th percentile (fit on the training fold) -> StandardScaler -> L2 LogisticRegression. Fixed C = 1 (bias analysis); grid C in {0.001, 0.01, 0.1, 1, 10} (selection analysis).
+- LightGBM: n_estimators=300, learning_rate=0.05, min_child_samples=200, subsample=0.8 (freq 1), colsample_bytree=0.8, random_state=SEED. Fixed num_leaves = 32; grid num_leaves in {8, 16, 32, 64, 128}.
+- Code: src/models.py (models), src/evaluate.py (cv_auc, test_auc, run_years), src/summary.py (summary + key figure). All by Qidi, ported from Colab.
 
 ## Order of work
 LR bias analysis -> LightGBM -> model-selection analysis -> robustness reruns (no prices < $5; median label) -> final 2024-26 check -> MLP (optional) -> simulated panel (optional).

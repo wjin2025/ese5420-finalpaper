@@ -4,7 +4,7 @@ Author: Qidi. Copied from Qidi's Colab (cells "Step 4" and "Step 5", version of
 2026-11-07). The logic is unchanged. Two mechanical changes only:
   1. `data` and `days` are passed in as arguments instead of global variables,
      so the functions can live in a .py file;
-  2. the seed comes from src/config.py (SEED = 0, project rule) instead of 5420.
+  2. the seed comes from src/config.py (SEED = 5420, same as Qidi's Colab).
 """
 import numpy as np
 import pandas as pd
