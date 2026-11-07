@@ -11,7 +11,7 @@ SEED = 0  # one seed for every random step (fold assignment, bootstrap, LightGBM
 
 # ---------- Paths ----------
 ROOT = Path(__file__).resolve().parent.parent  # project folder (one level above src/)
-DATA_CSV = ROOT / "data" / "nasdaq100.csv"
+DATA_CSV = ROOT / "data" / "NASDAQ100_Historical_Data.csv"
 RESULTS_DIR = ROOT / "results"
 FIGURES_DIR = ROOT / "figures"
 MAIN_RESULTS_CSV = RESULTS_DIR / "main.csv"
@@ -39,6 +39,8 @@ LR_GRID = [{"C": c} for c in [0.001, 0.01, 0.1, 1.0, 10.0]]
 LGBM_COMMON = {
     "random_state": SEED,   # LightGBM's "seed"
     "deterministic": True,  # same result on every run
+    "force_row_wise": True, # LightGBM docs: pair with deterministic for exact repeats
+    "verbose": -1,          # silence LightGBM's training log
     "num_threads": 6,       # M1 Pro has 6 performance cores
 }
 # Default config: library defaults plus the common settings above.

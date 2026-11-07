@@ -7,7 +7,7 @@ Talk to Jin in Chinese, explain every step plainly, and keep code readable (Jin 
 conda env `finalpaper`, Python 3.11; pandas 3.1, numpy 2.4, scikit-learn 1.9, lightgbm 4.7 (see requirements.txt). Mac M1 Pro: 6 performance cores, use num_threads=6 for LightGBM.
 
 ## Data
-data/nasdaq100.csv: Ticker, Date, Open, High, Low, Close, Adj Close, Volume; 100 tickers, 2000-01-03 to 2026-02-18.
+data/NASDAQ100_Historical_Data.csv: Ticker, Date, Open, High, Low, Close, Adj Close, Volume; 100 tickers, 2000-01-03 to 2026-02-18.
 
 ## Rules (never break)
 - Features at day t use only data up to day t, computed per ticker (groupby Ticker). No center=True, no shift(-1) in features.

@@ -1,7 +1,7 @@
 """Load the raw NASDAQ-100 price file and run basic data checks.
 
 Usage (from the project folder):
-    python -m src.load_data                 # reads data/nasdaq100.csv
+    python -m src.load_data                 # reads data/NASDAQ100_Historical_Data.csv
     python -m src.load_data some/file.csv   # reads another path
 """
 import sys
