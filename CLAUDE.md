@@ -9,6 +9,18 @@ conda env `finalpaper`, Python 3.11; pandas 3.1, numpy 2.4, scikit-learn 1.9, li
 ## Data
 data/NASDAQ100_Historical_Data.csv: Ticker, Date, Open, High, Low, Close, Adj Close, Volume; 100 tickers, 2000-01-03 to 2026-02-18.
 
+## Features
+The 27 indicators documented by the Kaggle competition "Stock Market Signal: Predict Next-Day Returns"
+(https://www.kaggle.com/competitions/stock-market-signal-predict-next-day-returns): return_1d/5d/10d/20d,
+sma_ratio_5/10/20/50/200, ema_ratio_12/26, macd_hist, rsi_14, bb_position, volatility_10d/20d/60d,
+volume_sma_ratio_10/20, daily_range, avg_range_10d, high_low_ratio, momentum_10d/20d, roc_5, roc_10, atr_14.
+We only borrow the definitions; our prices are the NASDAQ-100 CSV above. Implementation: Qidi's make_features.
+Note: momentum_10d, momentum_20d, roc_5, roc_10 are exact rescalings of return_10d/20d/5d/10d (kept because documented).
+
+## Team workflow
+Each part has an owner (see proposal "Who does what"); the others review it. Qidi owns features and splits;
+Jin owns models; Yixun owns error analysis, bootstrap, key figure. Help Jin review others' code, do not silently rewrite it.
+
 ## Rules (never break)
 - Features at day t use only data up to day t, computed per ticker (groupby Ticker). No center=True, no shift(-1) in features.
 - Label = 1 if next-day Adj Close is higher (shift(-1) within ticker); drop each ticker's last day. Secondary label for robustness: beats the day's cross-sectional median return.
