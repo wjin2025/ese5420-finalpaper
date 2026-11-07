@@ -1,0 +1,44 @@
+# How much does shuffled cross-validation overstate next-day stock prediction?
+
+## Group
+Group 5420
+
+## Topic
+own (extension of Schnaubelt 2019; closest to guide topic 22)
+
+## Question
+When predicting whether a NASDAQ-100 stock closes higher the next trading day, how much does shuffled K-fold cross-validation overstate out-of-sample AUC compared with date-grouped and walk-forward validation, and does that bias change which model is selected?
+
+## Why it matters
+A team deciding whether to trade a signal sees only a validation estimate before risking money. Schnaubelt (2019) found random K-fold gave the largest estimation error on S&P 500 stocks over 1990-2015, while Arian et al. (2024) found walk-forward weak at preventing false discoveries. We test which holds on newer data (2012-2026), add gradient boosting, and separate same-day (cross-sectional) leakage from temporal leakage.
+
+## Data
+https://www.kaggle.com/datasets/jacksaleeby/nasdaq100-historical-data-2000-2026-upvote
+License: CC BY-SA 4.0, which permits sharing adapted figures with attribution under the same license. No personal data.
+Loaded: 514,075 rows, 8 columns (Ticker, Date, Open, High, Low, Close, Adj Close, Volume), 100 tickers, 2000-01-03 to 2026-02-18, 0 missing values.
+We compute the competition's 27 documented indicators per ticker from past prices only (27 inputs); target = 1 if next-day Adj Close is higher. After a 200-day warm-up: 494,075 stock-days, 50.4% positive.
+Open: the card does not name the upstream price source; may we publish aggregate figures (AUCs, never prices) under CC BY-SA?
+
+## Baseline
+Logistic regression with an L1 or L2 penalty on standardized features (Sections 3C, 5B), penalty tuned inside the folds.
+
+## Comparison
+LightGBM (Section 7B), and a two-layer MLP (Section 8A) if compute allows, each with the same small grid.
+
+## Evaluation
+Main analysis, 12 replications: for each test year Y from 2012 to 2023, models are developed on 2000 to Y-1 and their AUC (Section 3D) is estimated three ways (Sections 4A-4C): shuffled 5-fold; 5-fold with dates assigned to folds at random, so a day's stocks share a fold; and expanding-window walk-forward over the last five development years, purging the last training day, whose label overlaps validation. Estimation error = estimate minus true AUC in year Y, for a fixed default configuration of each model; its mean across years is the bias and its spread the variance, paired across schemes. Separately, each scheme picks a model and hyperparameters from the full grid; we record the AUC its pick reaches in year Y. Scaling and tuning stay inside folds.
+Final check, used once after every choice: develop on 2000-2023, test on January 2024 to February 2026, with intervals from 1,000 bootstrap resamples of whole trading days (Section 1C).
+
+## Key figure
+x: validation scheme (shuffled, date-grouped, walk-forward); y: estimation error (estimated minus true AUC), mean over the 12 test years with 95% intervals, one color per model. A zero line marks an honest estimate; hollow markers show the 2024-2026 check.
+
+## Risks and fallback
+AUCs may all sit near 0.51; a tie with its interval still answers the question. With one-day labels, shuffled CV may overstate little (Bergmeir et al. 2018 show when K-fold is valid); we would then focus on date grouping and regime shift. Twelve overlapping replications limit precision; we report this. Robustness reruns: without prices below $5, and with the target "beats the day's median return". Back-filled constituents add survivorship bias. We finish logistic regression and LightGBM before starting the MLP. Fallback: drop the MLP and the selection analysis.
+
+## Who does what
+Qidi: rebuild the features and the rolling splits.
+Jin: baseline, LightGBM and MLP, tuned inside the folds.
+Yixun: estimation-error analysis, bootstrap, key figure, from-scratch rerun with fixed seeds.
+
+## AI plan
+Claude (Anthropic): scoping, drafting this proposal, finding related papers, code scaffolding and leakage review. A group member opens and reads every paper we cite, we rerun every number with fixed seeds, and log AI use for the acknowledgements.
