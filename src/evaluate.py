@@ -1,6 +1,8 @@
 """Jin's part: the LR model, the three scheme estimates, the true AUC with its
 day-bootstrap 95% interval, and the results file.
 
+Author: Jin (written with Claude's help; see README, AI use).
+
 For one test year Y:
   estimate  = mean of the 5 fold AUCs of a scheme, on the dev set (2000..Y-1)
   true AUC  = refit on the whole (purged) dev set, AUC on year Y

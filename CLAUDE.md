@@ -1,6 +1,6 @@
 # Group 5420 final paper: how much does shuffled CV overstate next-day stock AUC?
 
-Read proposal.txt first. It is the approved plan. Do not change the design without asking Jin.
+Read docs/proposal.txt first. It is the approved plan. Do not change the design without asking Jin.
 Talk to Jin in Chinese, explain every step plainly, and keep code readable (Jin must explain every line).
 
 ## Environment
@@ -48,4 +48,4 @@ Jin owns models; Yixun owns error analysis, bootstrap, key figure. Help Jin revi
 LR bias analysis -> LightGBM -> model-selection analysis -> robustness reruns (no prices < $5; median label) -> final 2024-26 check -> MLP (optional) -> simulated panel (optional).
 
 ## Layout
-data/ (raw, not committed to git), src/, tests/, results/, figures/
+data/ (raw, not committed to git), docs/ (proposal), notebooks/ (Colab snapshots: qidi_colab, jin_early_colab), analysis.ipynb (main team notebook), src/, tests/, results/, figures/. README.md says who wrote what.

@@ -1,5 +1,7 @@
 """Look-ahead test (professor's requirement).
 
+Author: Jin (written with Claude's help; see README, AI use).
+
 Idea: a feature for day t may only use prices up to day t. So if we scramble
 every price AFTER day t, nothing on or before day t may change.
 

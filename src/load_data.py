@@ -1,5 +1,7 @@
 """Load the raw NASDAQ-100 price file and run basic data checks.
 
+Author: Jin (written with Claude's help; see README, AI use).
+
 Usage (from the project folder):
     python -m src.load_data                 # reads data/NASDAQ100_Historical_Data.csv
     python -m src.load_data some/file.csv   # reads another path

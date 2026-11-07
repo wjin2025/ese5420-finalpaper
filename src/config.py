@@ -1,5 +1,7 @@
 """Fixed settings for the whole project.
 
+Author: Jin (written with Claude's help; see README, AI use).
+
 Everything here is decided BEFORE looking at any results (professor's request),
 so that nobody can quietly tune the grid after seeing which scheme wins.
 Other files import from here instead of typing numbers again.

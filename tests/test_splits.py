@@ -1,5 +1,7 @@
 """Checks for the splits (Qidi's checks from Colab cells "Step 4" and "Step 5 check").
 
+Author: Qidi (the checks are from Qidi's Colab); moved into this file by Jin.
+
 How to run: python -m pytest -v tests/test_splits.py  (or the notebook cell)
 """
 import numpy as np

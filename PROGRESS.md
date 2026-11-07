@@ -23,7 +23,8 @@
 | 估计误差 | 估计值 = 5 折 AUC 的平均；误差 = 估计 − 真实 AUC；用固定的默认配置算，不用调参后的最优配置 | 写在 CLAUDE.md 的规则里 |
 | 2024-01 到 2026-02 | 最后只用一次，之前一律不碰 | proposal |
 
-## 3. 代码在哪（仓库：https://github.com/wjin2025/ese5420-finalpaper）
+## 3. 代码在哪（仓库：https://github.com/wjin2025/ese5420-finalpaper；每个文件谁写的，完整列表见 README.md）
+Qidi 的 Colab 全部内容（Step 0–7）存档在 `notebooks/qidi_colab.ipynb`；Jin 早期的 Colab 存档在 `notebooks/jin_early_colab.ipynb`；proposal 移到了 `docs/`。
 
 | 文件 | 内容 | 作者 |
 |---|---|---|
@@ -38,6 +39,21 @@
 | `CLAUDE.md` | 项目规则汇总 | — |
 
 数据文件 `data/NASDAQ100_Historical_Data.csv` 不上传到 GitHub，从 Kaggle 下载后放进 `data/` 文件夹。
+
+## 3b. ⚠️ 需要全组决定：Qidi 的 Step 6–7 和 Jin 的版本不一致
+
+Qidi 在 Colab 里新增了 Step 6（定死配置）和 Step 7（LR baseline，2018 年）。Jin 在仓库里也做了 LR baseline（2012 年）。两个版本在下面几处不一致，**要统一成一个版本**：
+
+| 项目 | Jin 的版本（CLAUDE.md / src/config.py） | Qidi 的版本（Colab Step 6） |
+|---|---|---|
+| LR 预处理 | 标准化 → LR | **先把每个特征裁剪到训练折的 1%–99% 分位数**，再标准化 → LR |
+| LightGBM 默认配置 | 库的默认参数 + seed、deterministic | num_leaves=32, n_estimators=300, lr=0.05, min_child_samples=200, subsample=0.8, colsample=0.8 |
+| LightGBM 网格（5 组） | (num_leaves, lr, n_estimators) 三个参数一起变 | 只变 num_leaves ∈ {8, 16, 32, 64, 128}，其他参数固定 |
+| 种子 | 0 | 5420 |
+| 示范年份 | 2012 | 2018 |
+| bootstrap AUC 的算法 | sklearn `roc_auc_score` 加权重 | 自己写的向量化算法，速度快，结果和 sklearn 一致（Qidi 加了 assert 检查） |
+
+Qidi 版本 2018 年的结果：shuffled 0.5264 / date 0.5233 / walk-forward 0.5187，真实 AUC 0.5157 [0.4934, 0.5395]，排序和 Jin 的 2012 年一样。
 
 ## 4. 第一个结果：LR，测试年 2012
 
