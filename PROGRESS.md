@@ -24,7 +24,7 @@
 | 2024-01 到 2026-02 | 最后只用一次，之前一律不碰 | proposal |
 
 ## 3. 代码在哪（仓库：https://github.com/wjin2025/ese5420-finalpaper；每个文件谁写的，完整列表见 README.md）
-Qidi 的 Colab 全部内容（Step 0–7）存档在 `notebooks/qidi_colab.ipynb`；Jin 早期的 Colab 存档在 `notebooks/jin_early_colab.ipynb`；proposal 移到了 `docs/`。
+Qidi 的 Colab 全部内容（Step 0–9）存档在 `notebooks/qidi_colab.ipynb`；Jin 早期的 Colab 存档在 `notebooks/jin_early_colab.ipynb`；proposal 移到了 `docs/`。
 
 | 文件 | 内容 | 作者 |
 |---|---|---|

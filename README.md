@@ -19,7 +19,7 @@ ESE 5420 期末项目。我们预测 NASDAQ-100 股票第二天是否上涨，�
 | | [tests/test_splits.py](tests/test_splits.py)：54 项切分检查 | **Qidi** | ✅ 通过 |
 | **5. 模型与评估** | [src/config.py](src/config.py)：种子、默认配置、调参网格 | Jin | ✅（和 Qidi 的 Step 6 有冲突，见 PROGRESS.md） |
 | | [src/evaluate.py](src/evaluate.py)：LR Pipeline、三种方式的估计、真实 AUC 和 bootstrap 区间、写结果文件 | Jin | ✅ 2012 年 |
-| | [notebooks/qidi_colab.ipynb](notebooks/qidi_colab.ipynb) Step 6–7：Qidi 版的定死配置和 LR baseline（2018 年） | **Qidi** | 待和 Jin 的版本合并 |
+| | [notebooks/qidi_colab.ipynb](notebooks/qidi_colab.ipynb) Step 6–9：Qidi 版的定死配置、LR baseline（2018 年）、LR 12 年循环、关键图第一版 | **Qidi** | 待和 Jin 的版本合并 |
 | **6. 结果与图** | [results/main.csv](results/main.csv)：每行 year, model, scheme, estimate, true_auc, true_lo, true_hi, error | 自动生成 | 2012 年 LR |
 | | `figures/`：关键图 | Yixun | ⏳ |
 | **主 notebook** | [analysis.ipynb](analysis.ipynb)：调用 `src/` 的代码，从上往下跑完全部步骤，输出可见 | 全组 | Step 0–4 |
