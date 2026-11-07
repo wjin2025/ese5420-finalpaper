@@ -75,7 +75,7 @@ Qidi 版本 2018 年的结果：shuffled 0.5264 / date 0.5233 / walk-forward 0.5
 - [ ] 检查 Jin 的 `src/evaluate.py`：每个折是否只在训练行上学标准化（用的是 Pipeline）
 
 **Yixun**
-- [ ] 把 GitHub 用户名发给 Jin，拉你进仓库
+- [ ] 接受 GitHub 邀请：https://github.com/wjin2025/ese5420-finalpaper/invitations
 - [ ] 检查 `src/evaluate.py` 里的 `true_auc_with_interval`（bootstrap 是你负责的部分）：每一组重抽样里，同一天被抽中几次，那一天所有股票的权重就是几
 - [ ] 想一下关键图怎么画：真实 AUC 的 bootstrap 区间怎么放进图里（教授要求）。Jin 会先出第一版
 
