@@ -1,16 +1,18 @@
-"""Checks for the splits (Qidi's checks from Colab cells "Step 4" and "Step 5 check").
+"""Tests for STEP 3: the splits.
 
-Author: Qidi (the checks are from Qidi's Colab); moved into this file by Jin.
+Authors: Jin and Qidi.
 
-How to run: python -m pytest -v tests/test_splits.py  (or the notebook cell)
+No row in both train and validation; date-grouped and walk-forward never split a
+day; walk-forward trains only on earlier days with one purged day; every outer
+split purges exactly one day; bootstrap draws n days per resample.
 """
 import numpy as np
 import pytest
 
 from src.config import SCHEMES, N_FOLDS
-from src.features import build_model_table
-from src.load_data import load_prices
-from src.splits import TESTS, trading_days, split, assign_folds_and_bootstrap, inner_folds
+from src.step2_features import build_model_table
+from src.step1_load_data import load_prices
+from src.step3_splits import TESTS, trading_days, split, assign_folds_and_bootstrap, inner_folds
 
 
 @pytest.fixture(scope="module")

@@ -1,10 +1,10 @@
-"""Load the raw NASDAQ-100 price file and run basic data checks.
+"""STEP 1. Load the raw price file and check it.
 
-Author: Jin (written with Claude's help; see README, AI use).
+Authors: Jin and Qidi.
 
-Usage (from the project folder):
-    python -m src.load_data                 # reads data/NASDAQ100_Historical_Data.csv
-    python -m src.load_data some/file.csv   # reads another path
+Reads data/NASDAQ100_Historical_Data.csv, sorts it by (Ticker, Date), and prints
+row count, tickers, date range, duplicates, non-positive prices, missing values.
+Run on its own:  python -m src.step1_load_data
 """
 import sys
 

@@ -1,13 +1,13 @@
-"""Label and 23 features for each (Ticker, Date).
+"""STEP 2. Build the label and the 23 features for every (Ticker, Date).
 
-Author: Qidi. Copied from Qidi's Colab notebook (version of 2026-11-07, cell
-"Step 2-3"); the formulas are unchanged. Only the last two functions are new:
-they wrap Qidi's per-ticker loop so other files can call it.
+Authors: Jin and Qidi. First developed in the group Colab (notebooks/colab_notebook.ipynb).
 
 Features = the 27 indicators documented by the Kaggle competition
 "Stock Market Signal: Predict Next-Day Returns", minus 4 exact copies of the
 returns (momentum_10d, momentum_20d, roc_5, roc_10), so 23 features.
+Label (target) = 1 if the next day's adjusted close is higher.
 All prices are split- AND dividend-adjusted (one price basis).
+Checked by tests/test_step2_no_lookahead.py.
 """
 import numpy as np
 import pandas as pd

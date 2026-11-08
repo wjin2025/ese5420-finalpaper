@@ -1,8 +1,10 @@
-"""12-year summary and the key figure.
+"""STEP 6. Summarize the 12 years and draw the key figure.
 
-Author: Qidi. Copied from Qidi's Colab (cell "Step 9", version of 2026-11-07).
-The logic is unchanged; it is split into two functions so it can be reused for
-LightGBM. (Per the proposal, the key figure is Yixun's part to refine.)
+Authors: Jin and Qidi. First developed in the group Colab (notebooks/colab_notebook.ipynb).
+The key figure is Yixun's part to refine (proposal).
+
+  summarize():  mean error per scheme, paired differences between schemes
+  key_figure(): x = scheme, y = estimation error, grey band = year-Y noise
 """
 import matplotlib.pyplot as plt
 import numpy as np

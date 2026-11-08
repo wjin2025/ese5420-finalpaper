@@ -1,19 +1,18 @@
-"""Look-ahead test (professor's requirement).
+"""Test for STEP 2: features never look ahead (professor's requirement).
 
-Author: Jin (written with Claude's help; see README, AI use).
+Authors: Jin and Qidi.
 
 Idea: a feature for day t may only use prices up to day t. So if we scramble
 every price AFTER day t, nothing on or before day t may change.
-
-How to run (from the project folder):  python -m pytest -v
+Run all tests:  python -m pytest -v
 """
 import numpy as np
 import pandas as pd
 import pytest
 
 from src.config import SEED
-from src.features import FEATURES, features_by_ticker
-from src.load_data import load_prices
+from src.step2_features import FEATURES, features_by_ticker
+from src.step1_load_data import load_prices
 
 # Several cut-off days t spread over the sample (each is a real trading day).
 CUTOFFS = ["2005-06-30", "2011-12-30", "2018-03-15", "2023-12-29"]

@@ -1,24 +1,22 @@
-"""CV estimates, year-Y AUC with its day-bootstrap interval, and the yearly loop.
+"""STEP 5. Score each scheme against the truth, year by year.
 
-Author: Qidi. Copied from Qidi's Colab (cells "Step 6" day_bootstrap_auc,
-"Step 7" and "Step 8", version of 2026-11-07). The logic is unchanged.
-Mechanical changes only: `data`, `days`, `boot` are passed in as arguments
-instead of global variables; the loop takes the model's name so the same
-results file can later hold LightGBM rows too.
+Authors: Jin and Qidi. First developed in the group Colab (notebooks/colab_notebook.ipynb).
 
 For one test year Y:
   cv_auc   = mean validation AUC over the 5 inner folds of a scheme (dev = before Y)
   test_auc = AUC on year Y of a model trained on the whole (purged) dev set
   test_lo, test_hi = 95% interval from 1,000 day-bootstrap resamples of year Y
   error    = cv_auc - test_auc
+run_years() does this for all 12 test years and saves results/results.csv.
+Checked by tests/test_step5_evaluate.py and the cross-check in analysis.ipynb.
 """
 import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 from src.config import RESULTS_CSV, SCHEMES, TEST_YEARS
-from src.features import FEATURES
-from src.splits import TESTS, split, inner_folds
+from src.step2_features import FEATURES
+from src.step3_splits import TESTS, split, inner_folds
 
 RESULT_COLUMNS = ['model', 'year', 'scheme', 'cv_auc', 'test_auc', 'test_lo', 'test_hi']
 

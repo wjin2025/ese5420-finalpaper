@@ -14,10 +14,10 @@ The 27 indicators documented by the Kaggle competition "Stock Market Signal: Pre
 (https://www.kaggle.com/competitions/stock-market-signal-predict-next-day-returns): return_1d/5d/10d/20d,
 sma_ratio_5/10/20/50/200, ema_ratio_12/26, macd_hist, rsi_14, bb_position, volatility_10d/20d/60d,
 volume_sma_ratio_10/20, daily_range, avg_range_10d, high_low_ratio, momentum_10d/20d, roc_5, roc_10, atr_14.
-We only borrow the definitions; our prices are the NASDAQ-100 CSV above. Implementation: Qidi's make_features (src/features.py).
+We only borrow the definitions; our prices are the NASDAQ-100 CSV above. Implementation: make_features in src/step2_features.py.
 We use 23 of the 27: momentum_10d, momentum_20d, roc_5, roc_10 are exact rescalings of return_10d/20d/5d/10d and are
 dropped (decided by Jin + Qidi; state this in the paper and to the professor). Model table: 491,772 rows, 50.58% up.
-Look-ahead test: python -m pytest (tests/test_no_lookahead.py). Rerun it after ANY change to features.py.
+Look-ahead test: tests/test_step2_no_lookahead.py. Rerun python -m pytest after ANY change to src/step2_features.py.
 
 ## Team workflow
 Each part has an owner (see proposal "Who does what"); the others review it. Qidi owns features and splits;
@@ -44,10 +44,18 @@ unchanged, then verify the port reproduces Qidi's numbers exactly.
 ## Fixed configs (src/config.py; Qidi's frozen configuration, adopted by the group 2026-11-07)
 - Logistic regression: Clip each feature to its 1st-99th percentile (fit on the training fold) -> StandardScaler -> L2 LogisticRegression. Fixed C = 1 (bias analysis); grid C in {0.001, 0.01, 0.1, 1, 10} (selection analysis).
 - LightGBM: n_estimators=300, learning_rate=0.05, min_child_samples=200, subsample=0.8 (freq 1), colsample_bytree=0.8, random_state=SEED. Fixed num_leaves = 32; grid num_leaves in {8, 16, 32, 64, 128}.
-- Code: src/models.py (models), src/evaluate.py (cv_auc, test_auc, run_years), src/summary.py (summary + key figure). All by Qidi, ported from Colab.
+- Code: src/step4_models.py, src/step5_evaluate.py (cv_auc, test_auc, run_years), src/step6_summary.py (summary + key figure).
 
 ## Order of work
 LR bias analysis -> LightGBM -> model-selection analysis -> robustness reruns (no prices < $5; median label) -> final 2024-26 check -> MLP (optional) -> simulated panel (optional).
 
 ## Layout
-data/ (raw, not committed to git), docs/ (proposal), notebooks/ (Colab snapshots: qidi_colab, jin_early_colab), analysis.ipynb (main team notebook), src/, tests/, results/, figures/. README.md says who wrote what.
+Files are numbered by pipeline step: src/step1_load_data.py -> step2_features -> step3_splits -> step4_models ->
+step5_evaluate -> step6_summary; settings in src/config.py; tests/test_stepN_*.py check step N. analysis.ipynb is the
+main notebook (sections = steps 1-6). docs/ = proposal; notebooks/colab_notebook.ipynb = archive of the group Colab
+(the link submitted to the professor); notebooks/early_draft.ipynb = old draft. data/ is not committed.
+README.md is the guided tour; PROGRESS.md the status. Keep this structure when adding files.
+
+## Attribution
+Work so far (data, features, splits, models, evaluation) is credited to "Jin and Qidi" jointly; do NOT write
+"Qidi wrote it, Jin reviewed". Yixun: key figure refinement, error analysis, bootstrap review.

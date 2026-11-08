@@ -1,16 +1,16 @@
-"""Checks for the evaluation code (src/evaluate.py, src/models.py).
+"""Tests for STEPS 4-5: the evaluation code.
 
-Author: Jin (written with Claude's help; see README, AI use).
+Authors: Jin and Qidi.
 
-Qidi's code already checks day_bootstrap_auc against sklearn with all weights
-equal to 1. Here we also check it with real bootstrap-style weights (days drawn
-0, 1, 2, ... times), which is how it is actually used.
+The fast bootstrap AUC must equal sklearn's AUC under real bootstrap weights
+(days drawn 0, 1, 2, ... times), and the clipping limits must come from the
+training rows only.
 """
 import numpy as np
 from sklearn.metrics import roc_auc_score
 
-from src.evaluate import day_bootstrap_auc
-from src.models import Clip
+from src.step5_evaluate import day_bootstrap_auc
+from src.step4_models import Clip
 
 
 def test_day_bootstrap_auc_matches_sklearn_with_weights():

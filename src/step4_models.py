@@ -1,7 +1,9 @@
-"""The two models with their fixed preprocessing.
+"""STEP 4. The two models and their preprocessing.
 
-Author: Qidi. Copied from Qidi's Colab (cell "Step 6", version of 2026-11-07);
-the logic is unchanged, the settings now come from src/config.py.
+Authors: Jin and Qidi. First developed in the group Colab (notebooks/colab_notebook.ipynb).
+
+  logistic(C):          clip extremes -> standardize -> L2 logistic regression (all fit inside the fold)
+  lightgbm(num_leaves): gradient-boosted trees (no scaling needed)
 """
 import numpy as np
 from lightgbm import LGBMClassifier

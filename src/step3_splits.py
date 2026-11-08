@@ -1,10 +1,11 @@
-"""Outer train/test splits, inner validation folds, and day-bootstrap resamples.
+"""STEP 3. Split the data: train/test per test year, the three CV schemes, bootstrap draws.
 
-Author: Qidi. Copied from Qidi's Colab (cells "Step 4" and "Step 5", version of
-2026-11-07). The logic is unchanged. Two mechanical changes only:
-  1. `data` and `days` are passed in as arguments instead of global variables,
-     so the functions can live in a .py file;
-  2. the seed comes from src/config.py (SEED = 5420, same as Qidi's Colab).
+Authors: Jin and Qidi. First developed in the group Colab (notebooks/colab_notebook.ipynb).
+
+  split():         test year Y -> (dev = all days before Y minus the last one, test = year Y)
+  inner_folds():   the 5 validation folds inside dev, for each of the three schemes
+  assign_folds_and_bootstrap(): draws the random folds and the 1,000 day-bootstrap resamples once
+Checked by tests/test_step3_splits.py.
 """
 import numpy as np
 import pandas as pd
